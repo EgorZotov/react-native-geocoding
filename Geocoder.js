@@ -7,7 +7,7 @@ export default {
     this.apiKey = apiKey;
   },
 
-  async getFromLatLng(lat, lng) {
+  async getFromLatLng(lat, lng, lang) {
     if (!this.apiKey) {
       return Promise.reject(new Error("Provided API key is invalid"));
     }
@@ -17,12 +17,12 @@ export default {
     }
 
     const latLng = `${lat},${lng}`;
-    const url = `${googleApiUrl}?key=${this.apiKey}&latlng=${encodeURI(latLng)}`;
+    const url = `${googleApiUrl}?key=${this.apiKey}&latlng=${encodeURI(latLng)}&language=${lang ? lang : 'en'}`;
     
     return this.handleUrl(url);
   },
 
-  async getFromLocation(address) {
+  async getFromLocation(address , lang) {
     if (!this.apiKey) {
       return Promise.reject(new Error("Provided API key is invalid"));
     }
@@ -31,13 +31,13 @@ export default {
       return Promise.reject(new Error("Provided address is invalid"));
     }
 
-    const url = `${googleApiUrl}?key=${this.apiKey}&address=${encodeURI(address)}`;
+    const url = `${googleApiUrl}?key=${this.apiKey}&address=${encodeURI(address)}&language=${lang ? lang : 'en'}`;
     
     return this.handleUrl(url);
   },
 
   async handleUrl(url) {
-  	const response = await fetch(url).catch(
+    const response = await fetch(url).catch(
       error => {
         return Promise.reject(new Error("Error fetching data"));
       }
